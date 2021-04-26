@@ -8,7 +8,6 @@ library(purrr)
 library(eiPack)
 library(readxl)
 library(writexl)
-library(xlsx)
 
 
 # Inputs
