@@ -1,6 +1,6 @@
 This R script takes as its input absolute figures of ethnic population totals and party vote totals for each political unit. Ecological inference estimates in terms of percentages of each ethnic group are then exported with additional descriptive information to an .xlsx file format.
 
-The following indices are in reference to the imported data frame. They are to be written as a vector of integers.
+The following indices are in reference to the imported data frame. They each are to be written as a vector of integers.
   
   Object `a` holds the column indices for each political party.
   
