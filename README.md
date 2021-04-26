@@ -12,6 +12,8 @@ The following indices are in reference to the imported data frame. They each are
 
 The ethnic groups used to compose objects `c` and `d` are compiled at the user's discretion. If no group applies, either or both objects can be left `NULL`. Objects `a` and `b` must be filled.
 
+Additionally, a string value representing the desired output file name is needed for object `x`.
+
 The sum of objects `b`,`c`, and `d` is used as the total population of each unit. Percentages of each party and ethnic group are computed in relation to this total population figure. The number of non-voters in each unit are computed as the difference between the total population and the total number of valid votes.
 
 From the`eiPack` R package, `ei.MD.bayes()` is applied to complete the analysis. The R manual is included in the repository. 
