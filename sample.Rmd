@@ -25,7 +25,7 @@ library(writexl)
 df <- read_excel("sample_data.xlsx")
 
 #### output name
-x <- "sample_output.xlsx"
+xray <- "sample_output.xlsx"
 
 #### party column indices 
 alpha <- c(2:7)
@@ -68,7 +68,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[c(alpha,beta,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0,1))]
   
-  } else if (is.null(c) == TRUE & is.null(d) == FALSE) {
+  } else if (is.null(charlie) == TRUE & is.null(delta) == FALSE) {
     df %>% 
     mutate(pop = rowSums(df[c(beta,delta)]),
            valid = rowSums(df[alpha]),
@@ -89,10 +89,10 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[c(alpha,beta,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0,1))]
   
-  } else if (is.null(d) == TRUE & is.null(c) == TRUE){
+  } else if (is.null(delta) == TRUE & is.null(charlie) == TRUE){
   df %>% 
     mutate(pop = rowSums(df[c(beta)]),
-           valid = rowSums(df[aalpha]),
+           valid = rowSums(df[alpha]),
            novote = pop - valid) %>% 
     filter(novote < 0) -> df_na
   
@@ -283,5 +283,5 @@ read.me <- data.frame(name = c("table",
 
 ``` {r Export Results}
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
-write_xlsx(sheets, path = x)
+write_xlsx(sheets, path = xray)
 ```
