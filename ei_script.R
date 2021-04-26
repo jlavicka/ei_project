@@ -151,16 +151,13 @@ if (is.null(c) == TRUE & is.null(d) == FALSE | is.null(d) == TRUE & is.null(c) =
   
   tune.out <- tuneMD(as.matrix(df[c(a,ncol(df))]) ~ as.matrix(df[b]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-  
   ei.out <- ei.MD.bayes(as.matrix(df[c(a,ncol(df))]) ~ as.matrix(df[b]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
   
 } else {
   
   tune.out <- tuneMD(as.matrix(df[c(a,ncol(df)-2)]) ~ as.matrix(df[c(b,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-  
-  ei.out <- ei.MD.bayes(as.matrix(df[c(a,ncol(df)-2)]) ~ as.matrix(df[c(b,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
-  
+  ei.out <- ei.MD.bayes(as.matrix(df[c(a,ncol(df)-2)]) ~ as.matrix(df[c(b,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)  
 }
 
 
