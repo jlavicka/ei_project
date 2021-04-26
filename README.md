@@ -1,4 +1,4 @@
-As its input, this R script takes absolute figures of ethnic population totals and party vote totals for each political unit. Ecological inference estimates in terms of percentages of each ethnic group are then exported as two summary files and two complete analyses with additional descriptive information, all of which are in an .xlsx format. This method of export is specfic to the author's use and can be adapted to the user's needs through manipulation of the `Export Results` code chunk.
+As its input, this R script takes absolute figures of ethnic population totals and party vote totals for each political unit. Ecological inference estimates in terms of percentages of each ethnic group are then exported with additional descriptive information to an .xlsx file format.
 
 The following indices are in reference to the imported data frame to be written as a vector of integers:
   
