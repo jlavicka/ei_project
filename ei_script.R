@@ -17,19 +17,6 @@ df <- read_excel("", sheet = , skip = )
 #### output name
 x <- ""
 
-####james' output
-jout <- ""
-
-####sheet name
-sheet <- ""
-
-####reg summary
-sum_res <- ""
-
-####james' summary
-jsum_res <- ""
-
-
 #### party column indices
 a <- c()
 
@@ -283,6 +270,3 @@ read.me <- data.frame(`name/number` = c("table",
 # Export Results
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
 write_xlsx(sheets, path = x)
-write_xlsx(sheets, path = jout)
-write.xlsx(as.data.frame(tbl), file = sum_res, sheetName = sheet, row.names = FALSE, append = TRUE)
-write.xlsx(as.data.frame(tbl), file = jsum_res, sheetName = sheet, row.names = FALSE, append = TRUE)
