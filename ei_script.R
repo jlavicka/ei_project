@@ -30,6 +30,7 @@ d <- c()
 ########################################################################
 
 #Data Prep
+colnames(df) -> df_colnames
 
 data.frame("p" = rep("p", length(a)), "n" = 1:length(a)) %>% 
   unite(p, n, col = "partyid", sep = "") %>% 
@@ -207,62 +208,62 @@ tbl[1:nrow(tbl) - 1,] -> tbl
 
 
 # Codebook
-read.me <- data.frame(`name/number` = c("table",
-                                        "output",
-                                        "mismatched data",
-                                        "",
-                                        "ethn",
-                                        "party",
-                                        "mean",
-                                        "sd",
-                                        "total",
-                                        "percent", 
-                                        "est_total", 
-                                        "est_percent", 
-                                        "est_vot_total", 
-                                        "est_vot_percent",
-                                        "",
-                                        "political parties",
-                                        "# of political parties",
-                                        "ethnic groups",
-                                        "groups merged into 'Other' category",
-                                        "groups merged into 'Unknown' category",
-                                        "# of ethnic groups (including 'Other' and 'Unknown')",
-                                        "",
-                                        "# of political units",
-                                        "# of mismatched observations"
-), 
-`description/number` = c("summary - percentage of votes cast by respective ethnic group for respective party relative to total number of votes cast by respective ethnic group", 
-                         "ei results of national estimates with major ethnic groups listed by party",
-                         "observations where total valid votes are greater than total population; dropped from analysis",
-                         "",
-                         "ethnic group", 
-                         "political party - coded relative to order of party in original dataset from left to right", 
-                         "average of ei estimates for number of votes cast by respective ethnic group for respective party", 
-                         "standard error of ei estimates for number of votes cast by respective ethnic group for respective party", 
-                         "total ethnic group population from original dataset", 
-                         "percentage of votes cast by respective ethnic group for respective party relative to original ethnic group population", 
-                         "total ethnic group population from ei results", 
-                         "percentage of votes cast by respective ethnic group for respective party relative to ethnic group population from ei reuslts", 
-                         "total number of votes cast by respective ethnic group", 
-                         "percentage of votes cast by respective ethnic group for respective party relative to total number of votes cast by respective ethnic group",
-                         "",
-                         gsub("^c\\(|\\)$", "", paste(as.data.frame(partyid$party))),
-                         nrow(tbl),
-                         gsub("^c\\(|\\)$", "", paste(as.data.frame(colnames(df[b])))),
-                         if (is.null(c) == TRUE){
-                           paste("NA")
-                         } else {
-                           gsub("^c\\(|\\)$", "", paste(as.data.frame(colnames(df[c]))))},
-                         if (is.null(d) == TRUE){
-                           paste("NA")
-                         } else {
-                           gsub("^c\\(|\\)$", "", paste(as.data.frame(colnames(df[d]))))},
-                         ncol(tbl) - 1,
-                         "",
-                         nrow(df),
-                         nrow(df_na)
-))
+read.me <- data.frame(name = c("table",
+                               "output",
+                               "mismatched data",
+                               "",
+                               "ethn",
+                               "party",
+                               "mean",
+                               "sd",
+                               "total",
+                               "percent", 
+                               "est_total", 
+                               "est_percent", 
+                               "est_vot_total", 
+                               "est_vot_percent",
+                               "",
+                               "political parties",
+                               "# of political parties",
+                               "ethnic groups",
+                               "groups merged into 'Other' category",
+                               "groups merged into 'Unknown' category",
+                               "# of ethnic groups (including 'Other' and 'Unknown')",
+                               "",
+                               "# of political units",
+                               "# of mismatched observations"
+                               ), 
+                      description = c("summary - percentage of votes cast by respective ethnic group for respective party relative to total number of votes cast by respective ethnic group", 
+                                      "ei results of national estimates with major ethnic groups listed by party",
+                                      "observations where total valid votes are greater than total population; dropped from analysis",
+                                      "",
+                                      "ethnic group", 
+                                      "political party - coded relative to order of party in original dataset from left to right", 
+                                      "average of ei estimates for number of votes cast by respective ethnic group for respective party", 
+                                      "standard error of ei estimates for number of votes cast by respective ethnic group for respective party", 
+                                      "total ethnic group population from original dataset", 
+                                      "percentage of votes cast by respective ethnic group for respective party relative to original ethnic group population", 
+                                      "total ethnic group population from ei results", 
+                                      "percentage of votes cast by respective ethnic group for respective party relative to ethnic group population from ei reuslts", 
+                                      "total number of votes cast by respective ethnic group", 
+                                      "percentage of votes cast by respective ethnic group for respective party relative to total number of votes cast by respective ethnic group",
+                                      "",
+                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(partyid$party))),
+                                      nrow(tbl),
+                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(df_colnames[b]))),
+                                      if (is.null(c) == TRUE){
+                                        paste("NA")
+                                      } else {
+                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(df_colnames[c])))},
+                                      if (is.null(d) == TRUE){
+                                        paste("NA")
+                                      } else {
+                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(df_colnames[d])))},
+                                      ncol(tbl) - 1,
+                                      "",
+                                      nrow(df),
+                                      nrow(df_na)
+                                      ))
 
 
 # Export Results
