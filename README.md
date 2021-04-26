@@ -1,9 +1,13 @@
 As its input, this R script takes absolute figures of ethnic population totals and party vote totals for each political unit. Ecological inference estimates in terms of percentages of each ethnic group are then exported as two summary files and two complete analyses with additional descriptive information, all of which are in an .xlsx format. This method of export is specfic to the author's use and can be adapted to the user's needs through manipulation of the `Export Results` code chunk.
 
 The following indices are in reference to the imported data frame to be written as a vector of integers:
+  
   Object `a` holds the column indices for each political party.
+  
   Object `b` holds the column indices of each main ethnic group. 
+ 
   Object `c` holds the column index or indices of the ethnic group labelled `Other`.
+ 
   Object `d` holds the column index or indices of the ethnic group labelled `Unknown`.
 
 The ethnic groups used to compose objects `c` and `d` are compiled at the user's discretion. If no group applies, either or both objects can be left `NULL`. Objects `a` and `b` must be filled.
