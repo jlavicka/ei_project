@@ -19,7 +19,7 @@ xray <- ""
 alpha <- c()
 
 #### main ethnic group indices
-beta <- c()
+bravo <- c()
 
 #### column indices to be combined into other group
 charlie <- c()
@@ -36,7 +36,7 @@ data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>%
   cbind(party = df_colnames[alpha]) -> partyid
 if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   df %>% 
-    mutate(pop = rowSums(df[c(beta,charlie)]),
+    mutate(pop = rowSums(df[c(bravo,charlie)]),
            valid = rowSums(df[alpha]),
            novote = pop - valid) %>% 
     filter(novote < 0) -> df_na
@@ -44,20 +44,20 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   names(df)[alpha] <- partyid$partyid
   
   df %>% 
-    mutate(pop = rowSums(df[c(beta,charlie)]),
+    mutate(pop = rowSums(df[c(bravo,charlie)]),
            valid = rowSums(df[alpha]), 
            novote = pop - valid,
            Other = rowSums(df[charlie])) %>%
     relocate(c(pop, valid, novote, Other), .after = last_col()) %>% 
     filter(novote > 0) -> df
   
-  df[c(beta,ncol(df))] -> agg
+  df[c(bravo,ncol(df))] -> agg
   
-  df[c(alpha,beta,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0,1))]
+  df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
   
   } else if (is.null(charlie) == TRUE & is.null(delta) == FALSE) {
     df %>% 
-    mutate(pop = rowSums(df[c(beta,delta)]),
+    mutate(pop = rowSums(df[c(bravo,delta)]),
            valid = rowSums(df[alpha]),
            novote = pop - valid) %>% 
     filter(novote < 0) -> df_na
@@ -65,20 +65,20 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   names(df)[alpha] <- partyid$partyid
   
   df %>% 
-    mutate(pop = rowSums(df[c(beta,delta)]),
+    mutate(pop = rowSums(df[c(bravo,delta)]),
            valid = rowSums(df[alpha]), 
            novote = pop - valid,
            Unknown = rowSums(df[delta])) %>%
     relocate(c(pop, valid, novote, Unknown), .after = last_col()) %>% 
     filter(novote > 0) -> df
   
-  df[c(beta,ncol(df))] -> agg
+  df[c(bravo,ncol(df))] -> agg
   
-  df[c(alpha,beta,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0,1))]
+  df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
   
   } else if (is.null(delta) == TRUE & is.null(charlie) == TRUE){
   df %>% 
-    mutate(pop = rowSums(df[c(beta)]),
+    mutate(pop = rowSums(df[c(bravo)]),
            valid = rowSums(df[alpha]),
            novote = pop - valid) %>% 
     filter(novote < 0) -> df_na
@@ -86,19 +86,19 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   names(df)[alpha] <- partyid$partyid
   
   df %>% 
-    mutate(pop = rowSums(df[c(beta)]),
+    mutate(pop = rowSums(df[c(bravo)]),
            valid = rowSums(df[alpha]), 
            novote = pop - valid) %>%
     relocate(c(pop, valid, novote), .after = last_col()) %>% 
     filter(novote > 0) -> df
   
-  df[beta] -> agg
+  df[bravo] -> agg
   
-  df[c(alpha,beta,ncol(df))]/df$pop -> df[c(alpha,beta,ncol(df))]
+  df[c(alpha,bravo,ncol(df))]/df$pop -> df[c(alpha,bravo,ncol(df))]
   
   } else {
     df %>% 
-      mutate(pop = rowSums(df[c(beta,charlie,delta)]),
+      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
              valid = rowSums(df[alpha]),
              novote = pop - valid) %>% 
       filter(novote < 0) -> df_na
@@ -106,7 +106,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     names(df)[alpha] <- partyid$partyid
     
     df %>% 
-      mutate(pop = rowSums(df[c(beta,charlie,delta)]),
+      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
              valid = rowSums(df[alpha]), 
              novote = pop - valid,
              Unknown = rowSums(df[delta]),
@@ -114,9 +114,9 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
       relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) %>% 
       filter(novote > 0) -> df
     
-    df[c(beta,ncol(df)-c(0,1))] -> agg
+    df[c(bravo,ncol(df)-c(0,1))] -> agg
     
-    df[c(alpha,beta,ncol(df)-c(0:2))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0:2))]
+    df[c(alpha,bravo,ncol(df)-c(0:2))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0:2))]
 }
 
 # Model
@@ -124,21 +124,21 @@ set.seed(42)
 
 if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
-  tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(beta,ncol(df))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
+  tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(bravo,ncol(df))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-  ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(beta,ncol(df))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
+  ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(bravo,ncol(df))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
  
       } else if (is.null(charlie) == TRUE & is.null(delta) == TRUE){
   
-        tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
+        tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[bravo]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
  
-         ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
+         ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[bravo]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
   
          } else {
   
-           tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
+           tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(bravo,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-           ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
+           ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(bravo,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
            }
 
 # National Estimates
@@ -235,7 +235,7 @@ read.me <- data.frame(name = c("table",
                                       "",
                                       gsub("^c\\(|\\)$", "", paste(as.data.frame(partyid$party))),
                                       nrow(tbl),
-                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(df_colnames[beta]))),
+                                      gsub("^c\\(|\\)$", "", paste(as.data.frame(df_colnames[bravo]))),
                                       if (is.null(charlie) == TRUE){
                                         paste("NA")
                                       } else {
