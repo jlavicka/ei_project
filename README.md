@@ -14,7 +14,7 @@ The ethnic groups used to compose objects `charlie` and `delta` are compiled at 
 
 Additionally, a string value representing the desired output file name is needed for object `xray`.
 
-The sum of objects `beta`,`charlie`, and `delta` is used as the total population of each unit. Percentages of each party and ethnic group are computed in relation to this total population figure. The number of non-voters in each unit are computed as the difference between the total population and the total number of valid votes.
+The sum of objects `bravo`,`charlie`, and `delta` is used as the total population of each unit. Percentages of each party and ethnic group are computed in relation to this total population figure. The number of non-voters in each unit are computed as the difference between the total population and the total number of valid votes.
 
 From the`eiPack` R package, `ei.MD.bayes()` is used to complete the analysis. This function implements a hierarchical Multinomial-Dirichlet model for ecological inference in RxC tables. Draws from the posterior are obtained with a Metropolis-within-Gibbs algorithm. The package's R manual is included in the repository. 
 
