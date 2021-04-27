@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=40), tidy = TRUE)
 
 # Packages
 ```{r Packages, message=FALSE}
+
 library(readr)
 library(dplyr)
 library(stringr)
@@ -44,6 +45,7 @@ delta <- c(16)
 
 # Data Prep
 ```{r Data Prep, message=FALSE}
+
 colnames(df) -> df_colnames
 
 data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>% 
@@ -138,6 +140,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
 
 # Model
 ```{r Model, warning=FALSE}
+
 set.seed(42)
 
 if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE & is.null(charlie) == FALSE){
@@ -150,13 +153,11 @@ if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE 
   
         tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
- 
          ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
   
          } else {
   
            tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
-  
   
            ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
 
@@ -165,6 +166,7 @@ if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE 
 
 # National Estimates
 ```{r National Estimates, message=FALSE}
+
 ## add mean of ei estimates
 as.data.frame(ei.out$draws$Cell.counts)  %>% 
   map(mean) %>% 
@@ -216,6 +218,7 @@ ei.est[,c(1,11,2:10)] -> ei.est
 
 # Table
 ```{r Table, message=FALSE}
+
 ei.est %>% 
   group_by(ethn, party) %>% 
   summarise(est_vot_percent) %>% 
@@ -226,6 +229,7 @@ tbl[1:nrow(tbl) - 1,] -> tbl
 
 # Codebook
 ```{r Codebook}
+
 read.me <- data.frame(name = c("table",
                                "output",
                                "mismatched data",
@@ -286,6 +290,7 @@ read.me <- data.frame(name = c("table",
 
 # Export Results
 ``` {r Export Results}
+
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
 write_xlsx(sheets, path = xray)
 ```
