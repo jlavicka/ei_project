@@ -195,7 +195,6 @@ ei.est %>%
 tbl[1:nrow(tbl) - 1,] -> tbl
 
 # Codebook
-
 read.me <- data.frame(name = c("table",
                                "output",
                                "mismatched data",
@@ -253,5 +252,6 @@ read.me <- data.frame(name = c("table",
                                       nrow(df_na)
                                       ))
 
+# Export Results
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
 write_xlsx(sheets, path = xray)
