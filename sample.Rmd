@@ -18,14 +18,13 @@ library(stringr)
 library(tidyr)
 library(purrr)
 library(eiPack)
-library(readxl)
 library(writexl)
 ```
 
 # Inputs
 ```{r Inputs, message=FALSE}
 
-df <- read_excel("sample_data.xlsx")
+df <- read_csv("sample_data.csv")
 
 #### output name
 xray <- "sample_output.xlsx"
