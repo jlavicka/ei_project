@@ -9,6 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=40), tidy = TRUE)
 ```
 
+# Packages
 ```{r Packages, message=FALSE}
 library(readr)
 library(dplyr)
@@ -20,6 +21,7 @@ library(readxl)
 library(writexl)
 ```
 
+# Inputs
 ```{r Inputs, message=FALSE}
 
 df <- read_excel("sample_data.xlsx")
@@ -40,7 +42,8 @@ charlie <- c(15)
 delta <- c(16)
 ```
 
-```{r Data, message=FALSE}
+# Data Prep
+```{r Data Prep, message=FALSE}
 colnames(df) -> df_colnames
 
 data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>% 
