@@ -16,7 +16,7 @@ Additionally, a string value representing the desired output file name is needed
 
 The sum of objects `beta`,`charlie`, and `delta` is used as the total population of each unit. Percentages of each party and ethnic group are computed in relation to this total population figure. The number of non-voters in each unit are computed as the difference between the total population and the total number of valid votes.
 
-From the`eiPack` R package, `ei.MD.bayes()` is applied to complete the analysis. The R manual is included in the repository. 
+From the`eiPack` R package, `ei.MD.bayes()` is used to complete the analysis. This function implements a multinomial dirichlet model for ecological inference in RxC tables. The package's R manual is included in the repository. 
 
 Currently, the code does not account for mismatched political units. The total population needs to be greater than the total number of valid votes for each population unit to be included. Mismatched units are dropped from the analysis and exported with the results in a separate Excel tab for further inspection. 
 
