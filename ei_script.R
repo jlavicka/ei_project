@@ -29,8 +29,7 @@ delta <- c()
 
 ########################################################################
 
-#Data Prep
-
+# Data Prep
 colnames(df) -> df_colnames
 data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>% 
   unite(p, n, col = "partyid", sep = "") %>% 
@@ -120,9 +119,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     df[c(alpha,beta,ncol(df)-c(0:2))]/df$pop -> df[c(alpha,beta,ncol(df)-c(0:2))]
 }
 
-
 # Model
-
 set.seed(42)
 
 if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE & is.null(charlie) == FALSE){
@@ -130,23 +127,23 @@ if (is.null(charlie) == TRUE & is.null(delta) == FALSE | is.null(delta) == TRUE 
   tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(beta,ncol(df))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
   ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-1)]) ~ as.matrix(df[c(beta,ncol(df))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
-
-    } else if (is.null(charlie) == TRUE & is.null(delta) == TRUE){
+ 
+      } else if (is.null(charlie) == TRUE & is.null(delta) == TRUE){
   
-       tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
+        tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-       ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
+ 
+         ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df))]) ~ as.matrix(df[beta]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
   
          } else {
   
-            tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
+           tune.out <- tuneMD(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), covariate = NULL, data = df, ntunes = 10, totaldraws = 10000, total = "pop")
   
-            ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
+  
+           ei.out <- ei.MD.bayes(as.matrix(df[c(alpha,ncol(df)-2)]) ~ as.matrix(df[c(beta,ncol(df)-c(0,1))]), total = "pop", data = df, tune.list = tune.out, sample = 10000, thin = 2, burnin = 2000)
            }
 
-
 # National Estimates
-
 ## add mean of ei estimates
 as.data.frame(ei.out$draws$Cell.counts)  %>% 
   map(mean) %>% 
@@ -156,7 +153,6 @@ as.data.frame(ei.out$draws$Cell.counts)  %>%
          ethn_party = str_replace(ethn_party, "^ccount\\.", "")) %>% 
   separate(ethn_party, sep = "\\.(?=p[[:digit:]])|\\.(?=novote)", into = c("ethn", "partyid")) %>% 
   mutate(partyid = as.factor(partyid)) -> ei.est
-
 ## add standard deviation of ei estimates
 as.data.frame(ei.out$draws$Cell.counts)  %>% 
   map(sd) %>% 
@@ -164,7 +160,6 @@ as.data.frame(ei.out$draws$Cell.counts)  %>%
   gather(value = "sd") %>%
   mutate(sd = round(sd, 2)) %>% 
   select(sd) -> ei.est[,4]
-
 ## add sum and percent of ethnic group totals from original dataset
 agg %>% 
   map(sum) %>% 
@@ -173,7 +168,6 @@ agg %>%
   right_join(ei.est, by = "ethn") %>% 
   mutate(percent = round((mean/total*100), 2)) %>% 
   select(ethn, partyid, mean, sd, total, percent) -> ei.est
-
 ## add sum and percent of ethnic group totals from ei estimates
 ei.est %>% 
   group_by(ethn) %>% 
@@ -181,7 +175,6 @@ ei.est %>%
   right_join(ei.est, by = "ethn") %>% 
   mutate(est_percent = round((mean/est_total*100), 2)) %>% 
   select(ethn, partyid, mean, sd, total, percent, est_total, est_percent) -> ei.est
-
 ## add sum and percent of voting population - totals minus novote party
 ei.est %>% 
   filter(partyid != "novote") %>% 
@@ -190,22 +183,19 @@ ei.est %>%
   right_join(ei.est, by = "ethn") %>% 
   mutate(est_vot_percent = round((mean/est_vot_total*100), 2)) %>%
   select(ethn, partyid, mean, sd, total, percent, est_total, est_percent, est_vot_total, est_vot_percent) -> ei.est
-
 ## attach party names
 full_join(ei.est, partyid, by = "partyid") -> ei.est
 ei.est[,c(1,11,2:10)] -> ei.est
 
-
-# Summary Table
+# Table
 ei.est %>% 
   group_by(ethn, party) %>% 
   summarise(est_vot_percent) %>% 
   spread(ethn, est_vot_percent) -> tbl
-
 tbl[1:nrow(tbl) - 1,] -> tbl
 
-
 # Codebook
+
 read.me <- data.frame(name = c("table",
                                "output",
                                "mismatched data",
@@ -263,7 +253,5 @@ read.me <- data.frame(name = c("table",
                                       nrow(df_na)
                                       ))
 
-
-# Export Results
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
 write_xlsx(sheets, path = xray)
