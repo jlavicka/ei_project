@@ -5,12 +5,11 @@ library(stringr)
 library(tidyr)
 library(purrr)
 library(eiPack)
-library(readxl)
 library(writexl)
 
 
 # Inputs
-df <- read_excel()
+df <- read_csv()
 
 #### output name
 xray <- ""
