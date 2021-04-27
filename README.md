@@ -2,7 +2,7 @@ The R script takes as its input ethnic population totals and party vote totals f
 
 The following indices are in reference to the imported data frame. They each are to be written as a vector of integers.
   
-  Object `alpha` contains the column indices for each political party.
+  Object `alpha` contains the column indices of each political party.
   
   Object `bravo` contains the column indices of each main ethnic group. 
  
