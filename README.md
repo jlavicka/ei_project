@@ -4,13 +4,13 @@ The following indices are in reference to the imported data frame. They each are
   
   Object `alpha` contains the column indices for each political party.
   
-  Object `beta` contains the column indices of each main ethnic group. 
+  Object `bravo` contains the column indices of each main ethnic group. 
  
   Object `charlie` contains the column index or indices of the ethnic group labelled `Other`.
  
   Object `delta` contains the column index or indices of the ethnic group labelled `Unknown`.
 
-The ethnic groups used to compose objects `charlie` and `delta` are compiled at the user's discretion. If no group applies, either or both objects can be left `NULL`. Objects `alpha` and `beta` must be filled.
+The ethnic groups used to compose objects `charlie` and `delta` are compiled at the user's discretion. If no group applies, either or both objects can be left `NULL`. Objects `alpha` and `bravo` must be filled.
 
 Additionally, a string value representing the desired output file name is needed for object `xray`.
 
