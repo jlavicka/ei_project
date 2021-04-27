@@ -18,7 +18,7 @@ The sum of objects `bravo`,`charlie`, and `delta` is used as the total populatio
 
 From the`eiPack` R package, `ei.MD.bayes()` is used to complete the analysis. This function implements a hierarchical Multinomial-Dirichlet model for ecological inference in RxC tables. Draws from the posterior are obtained with a Metropolis-within-Gibbs algorithm. The package's R manual is included in the repository. 
 
-Currently, the code does not account for mismatched political units. The total population needs to be greater than the total number of valid votes for each political unit in order to be included. Mismatched units are dropped from the analysis and exported with the results in a separate Excel tab for further inspection. 
+Currently, the code does not account for mismatched political units. The total population must be greater than the total number of valid votes for each political unit in order to be included. Mismatched units are dropped from the analysis and exported with the results in a separate Excel tab for further inspection. 
 
 To account for the missing data, future revisions will be made to include mismatched units. The units will be retotaled as a percentage of the valid votes with the assumption of complete voter-turnout, then resubmitted into the analysis.
 
