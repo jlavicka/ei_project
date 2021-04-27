@@ -284,6 +284,7 @@ read.me <- data.frame(name = c("table",
                                       ))
 ```
 
+# Export Results
 ``` {r Export Results}
 sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
 write_xlsx(sheets, path = xray)
