@@ -6,9 +6,9 @@ The following indices are in reference to the imported data frame. They each are
   
   Object `bravo` contains the column indices of each main ethnic group. 
  
-  Object `charlie` contains the column index or indices of the ethnic group labelled `Other`.
+  Object `charlie` contains the column index or indices of the ethnic group(s) labelled `Other`.
  
-  Object `delta` contains the column index or indices of the ethnic group labelled `Unknown`.
+  Object `delta` contains the column index or indices of the ethnic group(s) labelled `Unknown`.
 
 The ethnic groups used to compose objects `charlie` and `delta` are compiled at the user's discretion. If no group applies, either or both objects can be left `NULL`. Objects `alpha` and `bravo` must be filled.
 
