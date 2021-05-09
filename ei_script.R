@@ -30,17 +30,22 @@ delta <- c()
 
 # Data Prep
 colnames(df) -> df_colnames
+
 data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>% 
   unite(p, n, col = "partyid", sep = "") %>% 
   cbind(party = df_colnames[alpha]) -> partyid
+
 if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   df %>% 
     mutate(pop = rowSums(df[c(bravo,charlie)]),
            valid = rowSums(df[alpha]),
-           novote = pop - valid) %>% 
-    filter(novote < 0) -> df_na
+           novote = pop - valid,
+           Other = rowSums(df[charlie])) %>% 
+      relocate(c(pop, valid, novote, Other), .after = last_col()) %>%
+      filter(novote < 0) -> df_na -> df_na1
   
-  names(df)[alpha] <- partyid$partyid
+  df_na1 %>% 
+      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
   
   df %>% 
     mutate(pop = rowSums(df[c(bravo,charlie)]),
@@ -51,17 +56,30 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     filter(novote > 0) -> df
   
   df[c(bravo,ncol(df))] -> agg
-  
+    
+  df_na1[alpha]/df_na1$valid -> df_na1[alpha]
+    
+  df_na1[c(bravo,ncol(df_na1)-c(0,1))]/df_na1$pop -> df_na1[c(bravo,ncol(df_na1)-c(0,1))]
+    
   df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
+    
+  rbind(df, df_na1) -> df
+    
+  rm(df_na1)
+    
+  names(df)[alpha] <- partyid$partyid
   
   } else if (is.null(charlie) == TRUE & is.null(delta) == FALSE) {
     df %>% 
     mutate(pop = rowSums(df[c(bravo,delta)]),
            valid = rowSums(df[alpha]),
-           novote = pop - valid) %>% 
-    filter(novote < 0) -> df_na
-  
-  names(df)[alpha] <- partyid$partyid
+           novote = pop - valid,
+           Unknown = rowSums(df[delta])) %>%
+    relocate(c(pop, valid, novote, Unknown), .after = last_col()) %>%  
+    filter(novote < 0) -> df_na -> df_na1
+    
+    df_na1 %>% 
+      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
   
   df %>% 
     mutate(pop = rowSums(df[c(bravo,delta)]),
@@ -73,17 +91,29 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[c(bravo,ncol(df))] -> agg
   
+  df_na1[alpha]/df_na1$valid -> df_na1[alpha]
+  
+  df_na1[c(bravo,ncol(df_na1)-c(0,1))]/df_na1$pop -> df_na1[c(bravo,ncol(df_na1)-c(0,1))]
+  
   df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
+  
+  rbind(df, df_na1) -> df
+  
+  rm(df_na1)
+  
+  names(df)[alpha] <- partyid$partyid
   
   } else if (is.null(delta) == TRUE & is.null(charlie) == TRUE){
   df %>% 
     mutate(pop = rowSums(df[c(bravo)]),
            valid = rowSums(df[alpha]),
            novote = pop - valid) %>% 
-    filter(novote < 0) -> df_na
+    relocate(c(pop, valid, novote), .after = last_col()) %>%  
+    filter(novote < 0) -> df_na -> df_na1
   
-  names(df)[alpha] <- partyid$partyid
-  
+  df_na1 %>% 
+      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1  
+    
   df %>% 
     mutate(pop = rowSums(df[c(bravo)]),
            valid = rowSums(df[alpha]), 
@@ -93,16 +123,30 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[bravo] -> agg
   
+  df_na1[alpha]/df_na1$valid -> df_na1[alpha]
+  
+  df_na1[c(bravo,ncol(df_na1))]/df_na1$pop -> df_na1[c(bravo,ncol(df_na1))]
+  
   df[c(alpha,bravo,ncol(df))]/df$pop -> df[c(alpha,bravo,ncol(df))]
+  
+  rbind(df, df_na1) -> df
+  
+  rm(df_na1)
+  
+  names(df)[alhpa] <- partyid$partyid
   
   } else {
     df %>% 
-      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
+      mutate(pop = rowSums(df[c(beta,charlie,delta)]),
              valid = rowSums(df[alpha]),
-             novote = pop - valid) %>% 
-      filter(novote < 0) -> df_na
+             novote = pop - valid,
+             Unknown = rowSums(df[delta]),
+             Other = rowSums(df[charlie]))%>% 
+      relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) %>% 
+      filter(novote < 0) -> df_na -> df_na1
     
-    names(df)[alpha] <- partyid$partyid
+    df_na1 %>% 
+      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
     
     df %>% 
       mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
@@ -115,7 +159,17 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     
     df[c(bravo,ncol(df)-c(0,1))] -> agg
     
+    df_na1[alpha]/df_na1$valid -> df_na1[alpha]
+    
+    df_na1[c(bravo,ncol(df_na1)-c(0:2))]/df_na1$pop -> df_na1[c(bravo,ncol(df_na1)-c(0:2))]
+    
     df[c(alpha,bravo,ncol(df)-c(0:2))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0:2))]
+    
+    rbind(df, df_na1) -> df
+    
+    rm(df_na1)
+    
+    names(df)[alpha] <- partyid$partyid
 }
 
 # Model
@@ -250,5 +304,5 @@ read.me <- data.frame(name = c("table",
                                       ))
 
 # Export Results
-sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "mismatched data" = df_na)
+sheets <- list("read.me" = read.me, "table" = tbl, "output" = ei.est, "realigned data" = df_na)
 write_xlsx(sheets, path = xray)
