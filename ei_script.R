@@ -137,7 +137,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   } else {
     df %>% 
-      mutate(pop = rowSums(df[c(beta,charlie,delta)]),
+      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
              valid = rowSums(df[alpha]),
              novote = pop - valid,
              Unknown = rowSums(df[delta]),
@@ -248,7 +248,7 @@ tbl[1:nrow(tbl) - 1,] -> tbl
 # Codebook
 read.me <- data.frame(name = c("table",
                                "output",
-                               "mismatched data",
+                               "realigned data",
                                "",
                                "ethn",
                                "party",
