@@ -304,7 +304,7 @@ read.me <- data.frame(name = c("table",
                                "# of ethnic groups (including 'Other' and 'Unknown')",
                                "",
                                "# of political units",
-                               "# of mismatched observations"
+                               "# of realigned observations"
                                ), 
                       description = c("summary - percentage of votes cast by respective ethnic group for respective party relative to total number of votes cast by respective ethnic group", 
                                       "ei results of national estimates with major ethnic groups listed by party",
