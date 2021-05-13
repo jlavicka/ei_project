@@ -29,6 +29,8 @@ delta <- c()
 ########################################################################
 
 # Data Prep
+```{r Data Prep, message=FALSE}
+
 colnames(df) -> df_colnames
 
 data.frame("p" = rep("p", length(alpha)), "n" = 1:length(alpha)) %>% 
@@ -41,21 +43,16 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
            valid = rowSums(df[alpha]),
            novote = pop - valid,
            Other = rowSums(df[charlie])) %>% 
-      relocate(c(pop, valid, novote, Other), .after = last_col()) %>%
-      filter(novote < 0) -> df_na -> df_na1
-  
-  df_na1 %>% 
-      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
-  
-  df %>% 
-    mutate(pop = rowSums(df[c(bravo,charlie)]),
-           valid = rowSums(df[alpha]), 
-           novote = pop - valid,
-           Other = rowSums(df[charlie])) %>%
-    relocate(c(pop, valid, novote, Other), .after = last_col()) %>% 
-    filter(novote > 0) -> df
+      relocate(c(pop, valid, novote, Other), .after = last_col()) -> df1
   
   df[c(bravo,ncol(df))] -> agg
+  
+  df1 %>% 
+      filter(novote >= 0) -> df
+    
+    df1 %>% 
+      filter(novote < 0) %>% 
+      mutate(novote = 0) -> df_na -> df_na1
     
   df_na1[alpha]/df_na1$valid -> df_na1[alpha]
     
@@ -63,9 +60,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     
   df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
     
-  rbind(df, df_na1) -> df
-    
-  rm(df_na1)
+  rbind(df, df_na1) -> df; rm(df_na1); rm(df1)
     
   names(df)[alpha] <- partyid$partyid
   
@@ -75,21 +70,16 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
            valid = rowSums(df[alpha]),
            novote = pop - valid,
            Unknown = rowSums(df[delta])) %>%
-    relocate(c(pop, valid, novote, Unknown), .after = last_col()) %>%  
-    filter(novote < 0) -> df_na -> df_na1
+    relocate(c(pop, valid, novote, Unknown), .after = last_col()) -> df1
+
+    df[c(bravo,ncol(df))] -> agg
     
-    df_na1 %>% 
-      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
-  
-  df %>% 
-    mutate(pop = rowSums(df[c(bravo,delta)]),
-           valid = rowSums(df[alpha]), 
-           novote = pop - valid,
-           Unknown = rowSums(df[delta])) %>%
-    relocate(c(pop, valid, novote, Unknown), .after = last_col()) %>% 
-    filter(novote > 0) -> df
-  
-  df[c(bravo,ncol(df))] -> agg
+    df1 %>% 
+      filter(novote >= 0) -> df
+    
+    df1 %>% 
+      filter(novote < 0) %>% 
+      mutate(novote = 0) -> df_na -> df_na1
   
   df_na1[alpha]/df_na1$valid -> df_na1[alpha]
   
@@ -97,31 +87,25 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[c(alpha,bravo,ncol(df)-c(0,1))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0,1))]
   
-  rbind(df, df_na1) -> df
-  
-  rm(df_na1)
+  rbind(df, df_na1) -> df;rm(df_na1); rm(df1)
   
   names(df)[alpha] <- partyid$partyid
   
   } else if (is.null(delta) == TRUE & is.null(charlie) == TRUE){
   df %>% 
-    mutate(pop = rowSums(df[c(bravo)]),
-           valid = rowSums(df[alpha]),
-           novote = pop - valid) %>% 
-    relocate(c(pop, valid, novote), .after = last_col()) %>%  
-    filter(novote < 0) -> df_na -> df_na1
-  
-  df_na1 %>% 
-      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1  
-    
-  df %>% 
-    mutate(pop = rowSums(df[c(bravo)]),
-           valid = rowSums(df[alpha]), 
-           novote = pop - valid) %>%
-    relocate(c(pop, valid, novote), .after = last_col()) %>% 
-    filter(novote > 0) -> df
+      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
+             valid = rowSums(df[alpha]),
+             novote = pop - valid) %>% 
+      relocate(c(pop, valid, novote), .after = last_col()) -> df1
   
   df[bravo] -> agg
+  
+  df1 %>% 
+      filter(novote >= 0) -> df
+    
+    df1 %>% 
+      filter(novote < 0) %>% 
+      mutate(novote = 0) -> df_na -> df_na1
   
   df_na1[alpha]/df_na1$valid -> df_na1[alpha]
   
@@ -129,11 +113,9 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   
   df[c(alpha,bravo,ncol(df))]/df$pop -> df[c(alpha,bravo,ncol(df))]
   
-  rbind(df, df_na1) -> df
+  rbind(df, df_na1) -> df; rm(df_na1); rm(df1)
   
-  rm(df_na1)
-  
-  names(df)[alhpa] <- partyid$partyid
+  names(df)[alpha] <- partyid$partyid
   
   } else {
     df %>% 
@@ -141,23 +123,17 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
              valid = rowSums(df[alpha]),
              novote = pop - valid,
              Unknown = rowSums(df[delta]),
-             Other = rowSums(df[charlie]))%>% 
-      relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) %>% 
-      filter(novote < 0) -> df_na -> df_na1
+             Other = rowSums(df[charlie])) %>% 
+      relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) -> df1
     
-    df_na1 %>% 
-      mutate(novote = if_else(novote < 0, 0, novote)) -> df_na1
+    df1[c(bravo,ncol(df)-c(0,1))] -> agg
     
-    df %>% 
-      mutate(pop = rowSums(df[c(bravo,charlie,delta)]),
-             valid = rowSums(df[alpha]), 
-             novote = pop - valid,
-             Unknown = rowSums(df[delta]),
-             Other = rowSums(df[charlie])) %>%
-      relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) %>% 
-      filter(novote > 0) -> df
+    df1 %>% 
+      filter(novote >= 0) -> df
     
-    df[c(bravo,ncol(df)-c(0,1))] -> agg
+    df1 %>% 
+      filter(novote < 0) %>% 
+      mutate(novote = 0) -> df_na -> df_na1
     
     df_na1[alpha]/df_na1$valid -> df_na1[alpha]
     
@@ -165,12 +141,11 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     
     df[c(alpha,bravo,ncol(df)-c(0:2))]/df$pop -> df[c(alpha,bravo,ncol(df)-c(0:2))]
     
-    rbind(df, df_na1) -> df
-    
-    rm(df_na1)
+    rbind(df, df_na1) -> df; rm(df_na1); rm(df1)
     
     names(df)[alpha] <- partyid$partyid
 }
+```
 
 # Model
 set.seed(42)
