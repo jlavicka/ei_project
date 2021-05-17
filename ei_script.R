@@ -48,9 +48,11 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   df[c(bravo,ncol(df))] -> agg
   
   df1 %>% 
+      filter(pop > 0) %>% 
       filter(novote >= 0) -> df
     
-    df1 %>% 
+    df1 %>%
+      filter(pop > 0) %>% 
       filter(novote < 0) %>% 
       mutate(novote = 0) -> df_na -> df_na1
     
@@ -75,9 +77,11 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     df[c(bravo,ncol(df))] -> agg
     
     df1 %>% 
+      filter(pop > 0) %>% 
       filter(novote >= 0) -> df
     
-    df1 %>% 
+    df1 %>%
+      filter(pop > 0) %>% 
       filter(novote < 0) %>% 
       mutate(novote = 0) -> df_na -> df_na1
   
@@ -101,9 +105,11 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
   df[bravo] -> agg
   
   df1 %>% 
+      filter(pop > 0) %>% 
       filter(novote >= 0) -> df
     
-    df1 %>% 
+    df1 %>%
+      filter(pop > 0) %>% 
       filter(novote < 0) %>% 
       mutate(novote = 0) -> df_na -> df_na1
   
@@ -129,9 +135,11 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
     df1[c(bravo,ncol(df)-c(0,1))] -> agg
     
     df1 %>% 
+      filter(pop > 0) %>% 
       filter(novote >= 0) -> df
     
-    df1 %>% 
+    df1 %>%
+      filter(pop > 0) %>% 
       filter(novote < 0) %>% 
       mutate(novote = 0) -> df_na -> df_na1
     
