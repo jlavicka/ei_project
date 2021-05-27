@@ -29,7 +29,6 @@ delta <- c()
 ########################################################################
 
 # Data Prep
-```{r Data Prep, message=FALSE}
 
 colnames(df) -> df_colnames
 
