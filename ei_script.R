@@ -44,7 +44,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
            Other = rowSums(df[charlie])) %>% 
       relocate(c(pop, valid, novote, Other), .after = last_col()) -> df1
   
-  df[c(bravo,ncol(df))] -> agg
+  df1[c(bravo,ncol(df1))] -> agg
   
   df1 %>% 
       filter(pop > 0) %>% 
@@ -73,7 +73,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
            Unknown = rowSums(df[delta])) %>%
     relocate(c(pop, valid, novote, Unknown), .after = last_col()) -> df1
 
-    df[c(bravo,ncol(df))] -> agg
+    df1[c(bravo,ncol(df1))] -> agg
     
     df1 %>% 
       filter(pop > 0) %>% 
@@ -101,7 +101,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
              novote = pop - valid) %>% 
       relocate(c(pop, valid, novote), .after = last_col()) -> df1
   
-  df[bravo] -> agg
+  df1[bravo] -> agg
   
   df1 %>% 
       filter(pop > 0) %>% 
@@ -131,7 +131,7 @@ if (is.null(delta) == TRUE & is.null(charlie) == FALSE){
              Other = rowSums(df[charlie])) %>% 
       relocate(c(pop, valid, novote, Unknown, Other), .after = last_col()) -> df1
     
-    df1[c(bravo,ncol(df)-c(0,1))] -> agg
+    df1[c(bravo,ncol(df1)-c(0,1))] -> agg
     
     df1 %>% 
       filter(pop > 0) %>% 
